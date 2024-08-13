@@ -1,0 +1,11 @@
+services:
+  app:
+    image: "thanhdaon/hono-node"
+    ports:
+      - "8000:8000"
+    environment:
+      - "PORT=8000"
+      - "MYSQL_URL=mysql://root:YFTNgdJCP2AHUTQln87sTUjLs7RMk@178.128.105.228:3306/honoshowcases"
+      - "MYSQL_PROXY_QUERY_ENDPOINT=https://mysqlproxy.justshowcase.tech/honoshowcases/query"
+      - "MYSQL_PROXY_MIGRATE_ENDPOINT=https://mysqlproxy.justshowcase.tech/honoshowcases/migrate"
+      - "MYSQL_PROXY_BASIC_AUTH_TOKEN=cm9vdDpUWW5kdjEzQkV4TEdIbWM5TjRtUnZpSjJwVklqSWNSYQ=="

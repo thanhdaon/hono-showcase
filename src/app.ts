@@ -13,7 +13,7 @@ type Env = {
 };
 
 function createApp() {
-  const app = new OpenAPIHono<Env>({
+  const hono = new OpenAPIHono<Env>({
     defaultHook: (result, c) => {
       if (result.success) {
         return;
@@ -21,7 +21,9 @@ function createApp() {
 
       return c.json({ code: 400, error: formatZodError(result.error) }, 400);
     },
-  }).basePath("/api");
+  });
+
+  const app = hono.basePath("/api");
 
   app.use(cors());
 

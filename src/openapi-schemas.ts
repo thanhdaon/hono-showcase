@@ -31,6 +31,13 @@ export const TaskSchema = z
   })
   .openapi("Task");
 
+export const UserSchema = z
+  .object({
+    id: z.string(),
+    username: z.string(),
+  })
+  .openapi("User");
+
 export const NotifySuccessSchema = z.object({
   data: z.string(),
 });

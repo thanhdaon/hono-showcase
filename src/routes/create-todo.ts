@@ -1,5 +1,6 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import { app } from "~/app";
+import { requireAuth } from "~/auth/middleware";
 import { todos } from "~/db/schema";
 import {
   createSuccessResponseSchema,

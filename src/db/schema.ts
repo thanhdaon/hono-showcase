@@ -1,5 +1,6 @@
 import {
   boolean,
+  datetime,
   int,
   mysqlTable,
   timestamp,
@@ -39,4 +40,18 @@ export const tasks = mysqlTable("tasks", {
   updatedAt: timestamp("updated_at")
     .defaultNow()
     .$onUpdate(() => new Date()),
+});
+
+export const users = mysqlTable("user", {
+  id: varchar("id", { length: 255 }).primaryKey(),
+  username: varchar("username", { length: 255 }).notNull(),
+  hashedPassword: varchar("hashed_password", { length: 255 }).notNull(),
+});
+
+export const sessions = mysqlTable("session", {
+  id: varchar("id", { length: 255 }).primaryKey(),
+  userId: varchar("user_id", { length: 255 })
+    .notNull()
+    .references(() => users.id),
+  expiresAt: datetime("expires_at").notNull(),
 });

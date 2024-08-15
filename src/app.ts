@@ -5,10 +5,12 @@ import { logger } from "hono/logger";
 import { db } from "~/db/db";
 import { formatZodError } from "~/helpers/formatter";
 import { log } from "~/helpers/logger";
+import { auth } from "~/auth/auth";
 
 type Env = {
   Variables: {
     db: typeof db;
+    auth: typeof auth;
   };
 };
 
@@ -29,6 +31,7 @@ function createApp() {
 
   app.use(async (c, next) => {
     c.set("db", db);
+    c.set("auth", auth);
     await next();
   });
 
@@ -43,6 +46,12 @@ function createApp() {
   });
 
   app.get("/doc", swaggerUI({ url: "/api/openapi-json" }));
+
+  app.openAPIRegistry.registerComponent("securitySchemes", "SessionCookie", {
+    type: "apiKey",
+    in: "cookie",
+    name: "sessionId",
+  });
 
   return app;
 }

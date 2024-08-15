@@ -10,6 +10,8 @@ async function bootstrap() {
   await import("~/routes/update-todo");
   await import("~/routes/delete-todo");
   await import("~/routes/get-tasks");
+  await import("~/routes/auth-signup");
+  await import("~/routes/auth-signin");
 
   serve({ fetch: app.fetch, port: env.PORT }, (info) => {
     console.log(`Server is running`, info);

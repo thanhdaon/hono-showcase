@@ -1,5 +1,6 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import { app } from "~/app";
+import { db } from "~/db/db";
 import {
   createSuccessResponseSchema,
   ErrorSchema,
@@ -36,7 +37,7 @@ const route = createRoute({
 app.openapi(route, async (c) => {
   const { id } = c.req.valid("param");
 
-  const todo = await c.var.db.query.todos.findFirst({
+  const todo = await db.query.todos.findFirst({
     where: (fields, operators) => {
       return operators.eq(fields.id, id);
     },

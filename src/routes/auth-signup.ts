@@ -8,6 +8,8 @@ import {
   UserSchema,
 } from "~/openapi-schemas";
 import { Argon2id } from "oslo/password";
+import { db } from "~/db/db";
+import { auth } from "~/auth/auth";
 
 const route = createRoute({
   tags: ["auth"],
@@ -50,7 +52,7 @@ const route = createRoute({
 app.openapi(route, async (c) => {
   const { username, password } = c.req.valid("json");
 
-  const user = await c.var.db.query.users.findFirst({
+  const user = await db.query.users.findFirst({
     where: (fields, { eq }) => {
       return eq(fields.username, username);
     },
@@ -64,14 +66,14 @@ app.openapi(route, async (c) => {
   const argon2id = new Argon2id();
   const hashedPassword = await argon2id.hash(password);
 
-  await c.var.db.insert(users).values({
+  await db.insert(users).values({
     id: userId,
     username,
     hashedPassword,
   });
 
-  const session = await c.var.auth.createSession(userId, {});
-  const sessionCookie = c.var.auth.createSessionCookie(session.id);
+  const session = await auth.createSession(userId, {});
+  const sessionCookie = auth.createSessionCookie(session.id);
 
   c.header("Set-Cookie", sessionCookie.serialize(), { append: true });
   return c.json({ data: { id: userId, username } }, 201);

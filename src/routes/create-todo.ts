@@ -1,6 +1,6 @@
 import { createRoute, z } from "@hono/zod-openapi";
-import { app } from "~/app";
-import { requireAuth } from "~/auth/middleware";
+import { authApp } from "~/app";
+import { db } from "~/db/db";
 import { todos } from "~/db/schema";
 import {
   createSuccessResponseSchema,
@@ -12,6 +12,7 @@ const route = createRoute({
   tags: ["todos"],
   method: "post",
   path: "/todos",
+  security: [{ SessionCookie: [] }],
   request: {
     body: {
       content: {
@@ -46,15 +47,15 @@ const route = createRoute({
   },
 });
 
-app.openapi(route, async (c) => {
+authApp.openapi(route, async (c) => {
   const { title, category } = c.req.valid("json");
 
-  const [{ id }] = await c.var.db
+  const [{ id }] = await db
     .insert(todos)
     .values({ title, category })
     .$returningId();
 
-  const todo = await c.var.db.query.todos.findFirst({
+  const todo = await db.query.todos.findFirst({
     where(fields, operators) {
       return operators.eq(fields.id, id);
     },

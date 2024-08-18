@@ -1,6 +1,7 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import { eq } from "drizzle-orm";
 import { app } from "~/app";
+import { db } from "~/db/db";
 import { todos } from "~/db/schema";
 import { NotifySuccessSchema, TodoSchema } from "~/openapi-schemas";
 
@@ -27,6 +28,6 @@ const route = createRoute({
 
 app.openapi(route, async (c) => {
   const { id } = c.req.valid("param");
-  await c.var.db.delete(todos).where(eq(todos.id, id));
+  await db.delete(todos).where(eq(todos.id, id));
   return c.json({ data: `todo with id ${id} deleted` }, 200);
 });

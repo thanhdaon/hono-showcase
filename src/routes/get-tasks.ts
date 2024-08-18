@@ -1,6 +1,7 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import { count, SQL } from "drizzle-orm";
 import { app } from "~/app";
+import { db } from "~/db/db";
 import { tasks } from "~/db/schema";
 import { sleep } from "~/helpers/time";
 import { createPaginationResponseSchema, TaskSchema } from "~/openapi-schemas";
@@ -49,7 +50,7 @@ app.openapi(route, async (c) => {
     c.req.valid("query");
 
   await sleep(1000);
-  const records = await c.var.db.query.tasks.findMany({
+  const records = await db.query.tasks.findMany({
     limit: pageSize,
     offset: (page - 1) * pageSize,
     where(fields, { like, and, inArray }) {
@@ -73,7 +74,7 @@ app.openapi(route, async (c) => {
     },
   });
 
-  const [{ total }] = await c.var.db.select({ total: count() }).from(tasks);
+  const [{ total }] = await db.select({ total: count() }).from(tasks);
 
   return c.json({ data: records, total }, 200);
 });

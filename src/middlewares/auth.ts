@@ -1,5 +1,4 @@
 import { createMiddleware } from "hono/factory";
-import { Session, User } from "lucia";
 import { auth } from "~/auth/auth";
 
 export const requireAuth = createMiddleware(async (c, next) => {
@@ -10,7 +9,7 @@ export const requireAuth = createMiddleware(async (c, next) => {
 
   const { session, user } = await auth.validateSession(sessionId);
 
-  if (user && session && session.fresh) {
+  if (user && session) {
     c.header("Set-Cookie", auth.createSessionCookie(session.id).serialize(), {
       append: true,
     });
@@ -18,6 +17,7 @@ export const requireAuth = createMiddleware(async (c, next) => {
     c.set("user", user);
     c.set("session", session);
     await next();
+    return;
   }
 
   c.header("Set-Cookie", auth.createBlankSessionCookie().serialize(), {

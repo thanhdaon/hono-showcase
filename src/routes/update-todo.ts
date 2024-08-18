@@ -1,6 +1,7 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import { eq } from "drizzle-orm";
 import { app } from "~/app";
+import { db } from "~/db/db";
 import { todos } from "~/db/schema";
 import { TodoSchema } from "~/openapi-schemas";
 
@@ -42,12 +43,9 @@ app.openapi(route, async (c) => {
   const { id } = c.req.valid("param");
   const { title, category, done } = c.req.valid("json");
 
-  await c.var.db
-    .update(todos)
-    .set({ title, category, done })
-    .where(eq(todos.id, id));
+  await db.update(todos).set({ title, category, done }).where(eq(todos.id, id));
 
-  const todo = await c.var.db.query.todos.findFirst({
+  const todo = await db.query.todos.findFirst({
     where(fields, operators) {
       return operators.eq(fields.id, id);
     },

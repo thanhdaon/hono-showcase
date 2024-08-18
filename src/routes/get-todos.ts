@@ -1,5 +1,6 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import { app } from "~/app";
+import { db } from "~/db/db";
 import { createSuccessResponseSchema, TodoSchema } from "~/openapi-schemas";
 
 const route = createRoute({
@@ -29,7 +30,7 @@ const route = createRoute({
 app.openapi(route, async (c) => {
   const { page, pageSize, sort, direction } = c.req.valid("query");
 
-  const records = await c.var.db.query.todos.findMany({
+  const records = await db.query.todos.findMany({
     limit: pageSize,
     offset: (page - 1) * pageSize,
     orderBy: (fields, operators) => {

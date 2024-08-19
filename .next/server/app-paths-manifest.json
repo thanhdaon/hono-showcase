@@ -1,4 +1,3 @@
 {
-  "/api/[[...route]]/route": "static/webpack/app/api/[[...route]]/route.a1b06321d19cba09.hot-update.js",
-  "/_not-found/page": "app/_not-found/page.js"
+  "/api/[[...route]]/route": "app/api/[[...route]]/route.js"
 }

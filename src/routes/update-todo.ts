@@ -1,6 +1,6 @@
 import { createRoute, z } from "@hono/zod-openapi";
 import { eq } from "drizzle-orm";
-import { app } from "~/app";
+import { app } from "~/apps";
 import { db } from "~/db/db";
 import { todos } from "~/db/schema";
 import { TodoSchema } from "~/openapi-schemas";

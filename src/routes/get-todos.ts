@@ -1,5 +1,5 @@
 import { createRoute, z } from "@hono/zod-openapi";
-import { app } from "~/app";
+import { app } from "~/apps";
 import { db } from "~/db/db";
 import { createSuccessResponseSchema, TodoSchema } from "~/openapi-schemas";
 

@@ -2,8 +2,8 @@
   "name": "hono-nodejs",
   "type": "module",
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc && tsc-alias",
+    "dev": "next dev",
+    "build": "next build",
     "db:seed": "tsx src/db/seed.ts",
     "db:migrate": "drizzle-kit migrate --config=src/db/drizzle.config.ts",
     "db:generate": "drizzle-kit generate --config=src/db/drizzle.config.ts",
@@ -12,22 +12,20 @@
   },
   "dependencies": {
     "@faker-js/faker": "^8.4.1",
-    "@hono/node-server": "^1.12.0",
     "@hono/swagger-ui": "^0.4.0",
     "@hono/zod-openapi": "^0.15.1",
-    "@lucia-auth/adapter-drizzle": "^1.1.0",
     "@t3-oss/env-core": "^0.11.0",
     "dotenv": "^16.4.5",
     "drizzle-kit": "^0.23.1",
     "drizzle-orm": "^0.32.1",
     "hono": "^4.5.5",
-    "lucia": "^3.2.0",
     "mysql2": "^3.11.0",
-    "oslo": "^1.2.1",
+    "next": "^14.2.5",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
+    "@types/react": "18.3.3",
     "tsc-alias": "^1.8.10",
     "tsx": "^4.17.0",
     "typescript": "^5.5.4"

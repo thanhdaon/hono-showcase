@@ -1,5 +1,5 @@
 import { createRoute, z } from "@hono/zod-openapi";
-import { authApp } from "~/app";
+import { app } from "~/apps";
 import { db } from "~/db/db";
 import { todos } from "~/db/schema";
 import {
@@ -12,7 +12,6 @@ const route = createRoute({
   tags: ["todos"],
   method: "post",
   path: "/todos",
-  security: [{ SessionCookie: [] }],
   request: {
     body: {
       content: {
@@ -47,7 +46,7 @@ const route = createRoute({
   },
 });
 
-authApp.openapi(route, async (c) => {
+app.openapi(route, async (c) => {
   const { title, category } = c.req.valid("json");
 
   const [{ id }] = await db
